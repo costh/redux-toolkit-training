@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { getProducts } from "../../app/api";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { addToCart } from "../cart/cartSlice";
 import styles from "./Products.module.css";
 import { recievedProducts } from "./productSlice";
 
@@ -30,7 +31,13 @@ export function Products() {
                 <h1>{product.name}</h1>
                 <p>{product.description}</p>
                 <p>${product.price}</p>
-                <button>Add to Cart 🛒</button>
+                <button
+                  onClick={() => {
+                    dispatch(addToCart(product.id));
+                  }}
+                >
+                  Add to Cart 🛒
+                </button>
               </div>
             </article>
           </li>
