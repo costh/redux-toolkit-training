@@ -74,7 +74,9 @@ const cartSlice = createSlice({
 // in extra reducers
 export const checkoutCart = createAsyncThunk(
   "cart/checkout",
-  async (items: CartItems) => {
+  async (_, thunkAPI) => {
+    const state = thunkAPI.getState() as RootState;
+    const items = state.cart.items;
     const response = await checkout(items);
     return response;
   }
