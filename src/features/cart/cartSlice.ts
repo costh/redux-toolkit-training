@@ -13,11 +13,13 @@ type CheckoutState = "LOADING" | "READY" | "ERROR";
 export interface CartState {
   items: { [productID: string]: number };
   checkoutState: CheckoutState;
+  errorMessage: string;
 }
 
 const initialState: CartState = {
   items: {},
   checkoutState: "READY",
+  errorMessage: "",
 };
 
 const cartSlice = createSlice({
@@ -51,8 +53,10 @@ const cartSlice = createSlice({
     builder.addCase(checkoutCart.fulfilled, (state) => {
       state.checkoutState = "READY";
     });
-    builder.addCase(checkoutCart.rejected, (state) => {
+    // Rejected thunk has special property in the action with the rejected state from server
+    builder.addCase(checkoutCart.rejected, (state, action) => {
       state.checkoutState = "ERROR";
+      state.errorMessage = action.error.message || "";
     });
   },
 });
