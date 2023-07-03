@@ -21,12 +21,15 @@ const cartSlice = createSlice({
         state.items[id] = 1;
       }
     },
+    removeFromCart(state, action: PayloadAction<string>) {
+      delete state.items[action.payload];
+    },
   },
 });
 
 // Redux automaagically updates this
 
-export const { addToCart } = cartSlice.actions;
+export const { addToCart, removeFromCart } = cartSlice.actions;
 
 export default cartSlice.reducer;
 
