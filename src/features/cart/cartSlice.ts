@@ -1,4 +1,10 @@
-import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  PayloadAction,
+  createSelector,
+  createAsyncThunk,
+} from "@reduxjs/toolkit";
+import { CartItems, checkout } from "../../app/api";
 
 import { AppDispatch, RootState } from "../../app/store";
 
@@ -39,21 +45,27 @@ const cartSlice = createSlice({
   },
   // To handle arbitrary actions in our slice, we use the extraReducers property and the Builder API which provides a way to define cases for the reducer to handle without using the switch statement,
   extraReducers: function (builder) {
-    builder.addCase("cart/checkout/pending", (state, action) => {
+    builder.addCase(checkoutCart.pending, (state) => {
       state.checkoutState = "LOADING";
     });
-    builder.addCase("cart/checkout/fulfilled", (state, action) => {
+    builder.addCase(checkoutCart.fulfilled, (state) => {
       state.checkoutState = "READY";
+    });
+    builder.addCase(checkoutCart.rejected, (state) => {
+      state.checkoutState = "ERROR";
     });
   },
 });
 
-// Async thunk, you can call this function 
-export function checkout() {
-  return function checkoutThunk(dispatch: AppDispatch) {
-    dispatch({ type: "cart/checkout/pending" });
-  };
-}
+// Async thunk automatically generates actions for pending fulfilled and rejected and can be used
+// in extra reducers
+export const checkoutCart = createAsyncThunk(
+  "cart/checkout",
+  async (items: CartItems) => {
+    const response = await checkout(items);
+    return response;
+  }
+);
 
 // Redux automaagically updates this
 
