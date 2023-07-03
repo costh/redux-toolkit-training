@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
-import { RootState } from "../../app/store";
+
+import { AppDispatch, RootState } from "../../app/store";
 
 type CheckoutState = "LOADING" | "READY" | "ERROR";
 
@@ -41,8 +42,18 @@ const cartSlice = createSlice({
     builder.addCase("cart/checkout/pending", (state, action) => {
       state.checkoutState = "LOADING";
     });
+    builder.addCase("cart/checkout/fulfilled", (state, action) => {
+      state.checkoutState = "READY";
+    });
   },
 });
+
+// Async thunk, you can call this function 
+export function checkout() {
+  return function checkoutThunk(dispatch: AppDispatch) {
+    dispatch({ type: "cart/checkout/pending" });
+  };
+}
 
 // Redux automaagically updates this
 
