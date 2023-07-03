@@ -36,6 +36,12 @@ const cartSlice = createSlice({
       state.items[id] = quantity;
     },
   },
+  // To handle arbitrary actions in our slice, we use the extraReducers property and the Builder API which provides a way to define cases for the reducer to handle without using the switch statement,
+  extraReducers: function (builder) {
+    builder.addCase("cart/checkout/pending", (state, action) => {
+      state.checkoutState = "LOADING";
+    });
+  },
 });
 
 // Redux automaagically updates this
