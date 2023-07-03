@@ -17,6 +17,12 @@ The `lessons/` folder contains a unique folder for each lesson including a READM
 
 The final state of the application can also be found in the `final` branch.
 
+## Explanations
+
+Subscribe to selectors
+
+Dispatch an event with a payload, redux passes it to reducer function
+
 ## Technologies
 
 - [Vite](https://vitejs.dev/)
